@@ -1,0 +1,24 @@
+#include "mbed.h"
+#include "C12832.h"                 //using application board
+#include "ultrasonic.h"            // HC-SR04
+
+C12832 lcd(p5, p7, p6, p8, p11); 
+
+ void dist(int distance)
+{
+        wait_ms(500); 
+        lcd.cls();
+        lcd.locate(0,13);
+        lcd.printf("Distance changed to %dmm\r\n", distance);
+}
+
+ultrasonic mu(p21,p9, .1, 1, &dist); //Trigger, Echo
+
+int main()
+{
+    mu.startUpdates();
+    while(1)
+    {
+        mu.checkDistance();
+    }
+}
